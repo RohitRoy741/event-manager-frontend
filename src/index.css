@@ -27,7 +27,7 @@ code {
 }
 .title {
   text-align: center;
-  padding: 100px 0px;
+  padding: 70px 0px 40px 0px;
   color: whitesmoke;
   background-color: teal;
 }
@@ -55,12 +55,12 @@ code {
 }
 .create-form {
   width: 350px;
-  border: 1px solid black;
   position: fixed;
-  top: 200px;
-  left: 500px;
+  top: 25%;
+  left: 35%;
   z-index: 10;
-  background-color: rgb(236, 234, 234);
+  background-color: white;
+  padding: 10px;
 }
 .main-content {
   text-align: center;

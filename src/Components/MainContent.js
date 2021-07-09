@@ -21,7 +21,8 @@ function MainContent(props) {
                     <Card.Text>
                         Place: {props.data.address.city}
                     </Card.Text>
-                    <Button variant="primary" onClick={() => handleShow(true)}>RSVP</Button>
+                    <Button variant="primary" onClick={() => handleShow(true)} className="mr-2">RSVP</Button>
+                    <Button variant="secondary" onClick={() => props.handleShow(props.data.id, props.data._id, props.data, props.date) }>Update</Button>
                 </Card.Body>
                 </Card>
             </div>
