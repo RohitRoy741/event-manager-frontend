@@ -28,17 +28,11 @@ code {
 .title {
   text-align: center;
   padding: 70px 0px 40px 0px;
+  height: 60vh;
   color: whitesmoke;
   background-color: teal;
-}
-.title h1 {
-  font-size: 2rem;
-  font-weight: 400;
-  margin-bottom: 20px;
-}
-.title h3 {
-  font-size: 1.5rem;
-  font-weight: 400;
+  overflow: hidden;
+  position: relative;
 }
 .fixTop {
   position: fixed;
@@ -66,9 +60,47 @@ code {
   text-align: center;
 }
 .navbar {
-  background-color: teal;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 10;
+}
+.navbar-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-right: 20px;
+}
+.navbar-item {
+  margin-right: 10px;
+  color: white !important;
+  opacity: 0.8;
+}
+.navbar-item:hover {
+  opacity: 1;
+}
+.search-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px 0px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  background-color: #343a40;
+}
+.event-name {
+  margin-top: 20px;
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+  font-weight: 400;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  border-radius: 5px;
+}
+.event-date {
+  font-size: 1.5rem;
+  font-weight: 400;
 }

@@ -7,10 +7,6 @@ import { Spinner, Modal, Form, Button} from "react-bootstrap";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    let datesTemp = [];
-    datesTemp = [ new Date(2021,5,27),new Date(2021,5,29),new Date(2021,6,1),new Date(2021,6,14),
-      new Date(2021,6,31),new Date(2021,7,20),new Date(2021,7,31),new Date(2021,8,15),new Date(2021,10,17),
-      new Date(2021,11,10)]
     this.state = {
       data: null,
       _id: "",
@@ -22,10 +18,12 @@ class App extends React.Component {
       filteredData: [],
       searchValue: "",
       filterKey: "name",
-      dates : datesTemp,
       isFilterApplied: false,
       isDataLoaded: false,
-      show: false
+      show: false,
+      bannerEvent : {
+        date: new Date()
+      }
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -143,7 +141,8 @@ class App extends React.Component {
       company: {
         name: this.state.company
       },
-      date: new Date(this.state.eventDate[0])
+      date: new Date(this.state.eventDate[0]),
+      img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
     };
     let events = this.state.data.concat([event]);
     let postEvent = {
@@ -196,7 +195,8 @@ class App extends React.Component {
       company: {
         name: this.state.company
       },
-      date: new Date(this.state.eventDate[0])
+      date: new Date(this.state.eventDate[0]),
+      img: this.state.data[this.state.id].img
     };
     let events = [];
     for(let i=0; i<this.state.data.length; i++) {
@@ -231,6 +231,8 @@ class App extends React.Component {
         .then((response) => response.json())
         .then((result) => {
           let newEvents = [];
+          let targetEvent = {};
+          let date = new Date(2027, 11, 30);
           let i = 0;
           for(let item of result) {
             let event  = {
@@ -243,18 +245,23 @@ class App extends React.Component {
               company: {
                 name: item.company
               },
-              date: new Date(item.date)
+              date: new Date(item.date),
+              img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`
             };
+            if(event.date < date) {
+              targetEvent = event;
+              date = event.date;
+            }
             newEvents.push(event);
           }
-          console.log(newEvents);
-          return newEvents;
+          return {newEvents, targetEvent};
         })
-        .then( newEvents => {
+        .then( eventObj => {
           this.setState(state => ({
-            data: newEvents,
-            filteredData: newEvents,
-            isDataLoaded: true
+            data: eventObj.newEvents,
+            filteredData: eventObj.newEvents,
+            isDataLoaded: true,
+            bannerEvent: eventObj.targetEvent
           }))
         })      
   }
@@ -282,8 +289,6 @@ class App extends React.Component {
         <span className="sr-only">Loading...</span>
       </Spinner>
     );
-    
-    //console.log(this.state.eventDate[0].toDateString());
     return (
       <div>
         <Header inputValue={this.state.searchValue}
@@ -298,6 +303,10 @@ class App extends React.Component {
          company = {this.state.company}
          date = {this.state.eventDate[0]}
          createEvent = {this.createEvent}
+         targetEventName = {this.state.bannerEvent.name}
+         targetEventDate = {this.state.bannerEvent.date.toDateString()}
+         timeout = {this.state.bannerEvent.date.toString()}
+         image = {this.state.bannerEvent.img}
         />
         <div className="main-content">
           <div className="filter-div">

@@ -1,54 +1,83 @@
 import React, { useState } from "react"
-import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Modal} from "react-bootstrap";
+import { Navbar, Nav, Form, FormControl, Button, Modal, Col, InputGroup} from "react-bootstrap";
 function Header(props){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true) ;
+    let styles = {};
+    if(props.image) {
+        styles = {
+            backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%), url(${props.image})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+        }
+    }
+    console.log(new Date(props.timeout));
     return (
         <div>
-            <Navbar expand="lg" variant="dark" className="navbar">
-            <Navbar.Brand href="#home">E Manager</Navbar.Brand>
+            <Navbar expand="lg" variant="dark" bg="dark" className="navbar">
+            <Navbar.Brand href="#home">Event Manager</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                <Nav.Link href="#home">Home</Nav.Link>
-                <Nav.Link href="#link" onClick={()=>handleShow(true)}>Create Event</Nav.Link>
-                <NavDropdown title="Tasks" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1" onClick={()=>handleShow(true)}>Create Event</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">Your Events</NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">History</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">Log Out</NavDropdown.Item>
-                </NavDropdown>
+            <Navbar.Collapse id="basic-navbar-nav" className="navbar-items">
+                <Nav>
+                <Nav.Link href="#home" className="navbar-item">Home</Nav.Link>
+                <Nav.Link href="#link"  className="navbar-item" onClick={()=>handleShow(true)}>Create-Event</Nav.Link>
+                <Nav.Link href="#schedule" className="navbar-item">Schedule</Nav.Link>
+                <Nav.Link href="#my-events" className="navbar-item">My Events</Nav.Link>
+                <Nav.Link href="#history" className="navbar-item">History</Nav.Link>
                 </Nav>
-                <Form inline onSubmit={props.handleSubmit}>
-                    <Form.Control as="select"
-                      className="mr-2"
-                      value={props.filterKey}
-                      name="filterKey"
-                      onChange={(event) => {props.handleChange(event.target.name, event.target.value)}}
-                    >
-                        <option value="name">Name</option>
-                        <option value="city">City</option>
-                        <option value="company">Company</option>
-                    </Form.Control>
+            </Navbar.Collapse>
+            </Navbar>
+            <div className="title" style={styles}>
+                <h1 className="event-name">{props.targetEventName ? props.targetEventName : 'Name'}</h1>
+                <h3 className="event-date">{props.targetEventDate ? props.targetEventDate : 'Date'}</h3>
+            </div>
+            <Form onSubmit={props.handleSubmit}>
+            <Form.Row className="align-items-center search-form">
+                <Col xs="auto">
+                <Form.Label htmlFor="inlineFormInput" srOnly>
+                    Criteria
+                </Form.Label>
+                <Form.Control as="select"
+                    className="mb-2"
+                    id="inlineFormInput"
+                    value={props.filterKey}
+                    name="filterKey"
+                    onChange={(event) => {props.handleChange(event.target.name, event.target.value)}}
+                >
+                    <option value="name">Name</option>
+                    <option value="city">City</option>
+                    <option value="company">Company</option>
+                </Form.Control>
+                </Col>
+                <Col xs="auto">
+                <Form.Label htmlFor="inlineFormInputGroup" srOnly>
+                    Value
+                </Form.Label>
+                <InputGroup className="mb-2">
                     <FormControl 
                     type="text" 
                     placeholder="Search"
-                    className="mr-sm-2"
+                    id="inlineFormInputGroup"
                     name="searchValue" 
                     value={props.inputValue} 
                     onChange={(event) => {props.handleChange(event.target.name, event.target.value)}}
-                     />
-                    <Button variant="warning" type="submit">Search</Button>
-                    {props.isFilterApplied?<Button variant="danger" type="reset" className="ml-2" onClick={props.handleReset}>Reset</Button>:null}
-                </Form>
-            </Navbar.Collapse>
-            </Navbar>
-            <div className="title">
-                <h1>Event Manager</h1>
-                <h3>Manage your tasks with us and never miss an event!</h3>
-            </div>
+                    />
+                </InputGroup>
+                </Col>
+                <Col xs="auto">
+                <Button type="submit" className="mb-2">
+                    Search
+                </Button>
+                </Col>
+                {props.isFilterApplied?
+                <Col xs="auto">
+                <Button variant="danger" type="reset" className="mb-2" onClick={props.handleReset}>Reset</Button>
+                </Col>
+                :null}
+            </Form.Row>
+            </Form>
             <Modal
                 show={show}
                 onHide={handleClose}
@@ -77,7 +106,7 @@ function Header(props){
                         </Form.Group>
                         <Form.Group controlId="formGroupPassword">
                             <Form.Label>Date</Form.Label>
-                            <Form.Control type="date" placeholder="Date" name="date" value={props.date} onChange={props.handleAddEvent}></Form.Control>
+                            <Form.Control type="datetime-local" placeholder="Date" name="date" value={props.date} onChange={props.handleAddEvent}></Form.Control>
                         </Form.Group>
                     </Modal.Body>
                     <Modal.Footer>

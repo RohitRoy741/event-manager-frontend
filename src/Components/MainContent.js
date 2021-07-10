@@ -9,7 +9,7 @@ function MainContent(props) {
         <div>
             <div className="card-block">
                 <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={`https://source.unsplash.com/collection/4482145/300x200/?sig=${props.data.id}`} />
+                <Card.Img variant="top" src={props.data.img} />
                 <Card.Body>
                     <Card.Title>{props.data.name}</Card.Title>
                     <Card.Text>
