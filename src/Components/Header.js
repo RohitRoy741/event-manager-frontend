@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import { Navbar, Nav, Form, FormControl, Button, Modal, Col, InputGroup} from "react-bootstrap";
+import Timer from "./Timer";
 function Header(props){
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -31,7 +32,8 @@ function Header(props){
             </Navbar>
             <div className="title" style={styles}>
                 <h1 className="event-name">{props.targetEventName ? props.targetEventName : 'Name'}</h1>
-                <h3 className="event-date">{props.targetEventDate ? props.targetEventDate : 'Date'}</h3>
+                <h3 className="event-date">Hosted By: {props.targetEventDate ? props.targetEventCompany : 'Company'}</h3>
+                <Timer eventDate={props.targetEventDate} />
             </div>
             <Form onSubmit={props.handleSubmit}>
             <Form.Row className="align-items-center search-form">
@@ -40,7 +42,7 @@ function Header(props){
                     Criteria
                 </Form.Label>
                 <Form.Control as="select"
-                    className="mb-2"
+                    className="web"
                     id="inlineFormInput"
                     value={props.filterKey}
                     name="filterKey"
@@ -55,7 +57,7 @@ function Header(props){
                 <Form.Label htmlFor="inlineFormInputGroup" srOnly>
                     Value
                 </Form.Label>
-                <InputGroup className="mb-2">
+                <InputGroup>
                     <FormControl 
                     type="text" 
                     placeholder="Search"
@@ -67,7 +69,7 @@ function Header(props){
                 </InputGroup>
                 </Col>
                 <Col xs="auto">
-                <Button type="submit" className="mb-2">
+                <Button type="submit">
                     Search
                 </Button>
                 </Col>

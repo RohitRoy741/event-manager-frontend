@@ -22,7 +22,10 @@ class App extends React.Component {
       isDataLoaded: false,
       show: false,
       bannerEvent : {
-        date: new Date()
+        date: new Date(),
+        company: {
+          name: 'company'
+        }
       }
     };
     this.handleChange = this.handleChange.bind(this);
@@ -305,6 +308,7 @@ class App extends React.Component {
          createEvent = {this.createEvent}
          targetEventName = {this.state.bannerEvent.name}
          targetEventDate = {this.state.bannerEvent.date.toDateString()}
+         targetEventCompany = {this.state.bannerEvent.company.name}
          timeout = {this.state.bannerEvent.date.toString()}
          image = {this.state.bannerEvent.img}
         />
@@ -345,7 +349,7 @@ class App extends React.Component {
                     </Form.Group>
                     <Form.Group controlId="formGroupPassword">
                         <Form.Label>Date</Form.Label>
-                        <Form.Control type="date" placeholder="Date" name="date" value={this.state.date} onChange={this.handleAddEvent}></Form.Control>
+                        <Form.Control type="datetime-local" placeholder="Date" name="date" value={this.state.date} onChange={this.handleAddEvent}></Form.Control>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
