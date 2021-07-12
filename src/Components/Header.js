@@ -14,7 +14,6 @@ function Header(props){
             backgroundRepeat: 'no-repeat'
         }
     }
-    console.log(new Date(props.timeout));
     return (
         <div>
             <Navbar expand="lg" variant="dark" bg="dark" className="navbar">

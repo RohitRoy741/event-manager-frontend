@@ -88,11 +88,7 @@ class App extends React.Component {
       }
     });
   }
-  handleDateFilter(e) {
-    for(let date of this.state.dates) {
-      console.log((date-(new Date()))/(1000*60*60*24), (date-(new Date()))/(1000*60*60*24) <= 7);
-    }
-    
+  handleDateFilter(e) {    
     if(e.target.value==="allTime") {
       this.setState(state => ({
         filteredData: state.data
