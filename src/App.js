@@ -36,6 +36,7 @@ class App extends React.Component {
     this.createEvent = this.createEvent.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
   }
   handleChange(name,value){
     if(name==="date") {
@@ -225,6 +226,20 @@ class App extends React.Component {
         .then(response => response.json())
         .then((result) => console.log(result));
   }
+  deleteEvent(_id, id) {
+    let events = this.state.data.filter((event) => event.id !== id);
+    this.setState({
+      data: events,
+      filteredData: events
+    });
+    const requestOptions = {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
+    };
+    fetch('https://salamander-event-manager.herokuapp.com/events/'+_id, requestOptions) 
+        .then(response => response.json())
+        .then(result => console.log(result));
+  }
   componentDidMount() {
       fetch("https://salamander-event-manager.herokuapp.com/events")
         .then((response) => response.json())
@@ -268,7 +283,13 @@ class App extends React.Component {
     let events = [];
     if (this.state.isDataLoaded) {
       events = this.state.filteredData.map((event, index) => {
-        return <MainContent key={index} data={event} date={event.date.toDateString()} handleShow={this.handleShow}/>;
+        return <MainContent 
+        key={index}
+        data={event}
+        date={event.date.toDateString()}
+        handleShow={this.handleShow}
+        deleteEvent = {this.deleteEvent}
+        />;
       });
     }
     const Loader = (
