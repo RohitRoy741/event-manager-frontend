@@ -8,7 +8,7 @@ class App extends React.Component {
   
   render() {
     return (
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route path="/" exact component={Login}></Route>
           <Route path="/dashboard" exact component={Dashboard}></Route>
