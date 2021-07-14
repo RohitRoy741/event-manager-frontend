@@ -20,12 +20,12 @@ function Header(props){
     console.log(props.timeout)
     return (
         <div>
-            <Navbar expand="lg" variant="dark" bg="dark" className="navbar">
+            <Navbar expand="lg" variant="dark" bg="primary" className="navbar">
             <Navbar.Brand href="#home">Event Manager</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="navbar-items">
                 <Nav>
-                <Nav.Link href="#home" className="navbar-item">{user.username}</Nav.Link>
+                <Nav.Link href="#home" className="navbar-item username">{user.username}</Nav.Link>
                 <Nav.Link href="#link"  className="navbar-item" onClick={()=>handleShow(true)}>Create-Event</Nav.Link>
                 <Nav.Link href="#schedule" className="navbar-item">Schedule</Nav.Link>
                 <Nav.Link href="#my-events" className="navbar-item">My Events</Nav.Link>
@@ -72,13 +72,13 @@ function Header(props){
                 </InputGroup>
                 </Col>
                 <Col xs="auto">
-                <Button type="submit">
+                <Button type="submit" variant="warning">
                     Search
                 </Button>
                 </Col>
                 {props.isFilterApplied?
                 <Col xs="auto">
-                <Button variant="danger" type="reset" className="mb-2" onClick={props.handleReset}>Reset</Button>
+                <Button variant="danger" type="reset" onClick={props.handleReset}>Reset</Button>
                 </Col>
                 :null}
             </Form.Row>

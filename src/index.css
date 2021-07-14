@@ -29,8 +29,8 @@ code {
 }
 .title {
   text-align: center;
-  padding: 70px 0px 40px 0px;
-  height: 60vh;
+  padding: 60px 0px 40px 0px;
+  height: 47vh;
   color: whitesmoke;
   background-color: teal;
   overflow: hidden;
@@ -71,7 +71,7 @@ code {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-right: 20px;
+  margin-right: 100px;
 }
 .navbar-item {
   margin-right: 10px;
@@ -88,7 +88,7 @@ code {
   padding: 10px 0px;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  background-color: #343a40;
+  background-color: #0e56a2;
 }
 .event-name {
   margin-top: 30px;
@@ -126,4 +126,17 @@ code {
   padding: 35px 20px;
   background-color: white;
   border-top: turquoise solid 10px;
+}
+.bg-primary {
+  background-color: #0e56a2 !important;
+}
+.username {
+  position: fixed;
+  top: 8px;
+  right: 0;
+}
+@media only screen and (max-width: 600px) {
+  .username {
+    position: static;
+  }
 }
