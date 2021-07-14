@@ -167,7 +167,7 @@ class Dashboard extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postEvent)
     };
-    fetch('http://localhost:5000/events', requestOptions)
+    fetch('https://salamander-event-manager.herokuapp.com/events', requestOptions)
         .then(response => response.json())
         .then((result) => console.log(result));
   }
