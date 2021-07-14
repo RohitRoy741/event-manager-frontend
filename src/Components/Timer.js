@@ -6,7 +6,7 @@ function calculateMinDiff(eventDate, currentDate) {
     return Math.floor(((eventDate.getTime() - currentDate.getTime())/60000)%60);
 }
 function calculateHourDiff(eventDate, currentDate) {
-    return Math.floor(((eventDate.getTime() - currentDate.getTime())/3600000));
+    return Math.floor(((eventDate - currentDate)/3600000));
 }
 
 function Timer(props) {

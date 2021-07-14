@@ -167,7 +167,7 @@ class Dashboard extends React.Component {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(postEvent)
     };
-    fetch('https://salamander-event-manager.herokuapp.com/events', requestOptions)
+    fetch('http://localhost:5000/events', requestOptions)
         .then(response => response.json())
         .then((result) => console.log(result));
   }
@@ -189,6 +189,7 @@ class Dashboard extends React.Component {
   }
   updateEvent(e) {
     e.preventDefault();
+    console.log(this.state.eventDate[0]);
     let event = {
       id: this.state.id,
       name: this.state.name,
@@ -264,6 +265,7 @@ class Dashboard extends React.Component {
       fetch("https://salamander-event-manager.herokuapp.com/events")
         .then((response) => response.json())
         .then((result) => {
+          console.log(result);
           let newEvents = [];
           let targetEvent = {};
           let date = new Date(2027, 11, 30);

@@ -17,6 +17,7 @@ function Header(props){
             backgroundRepeat: 'no-repeat'
         }
     }
+    console.log(props.timeout)
     return (
         <div>
             <Navbar expand="lg" variant="dark" bg="dark" className="navbar">
@@ -35,7 +36,7 @@ function Header(props){
             <div className="title" style={styles}>
                 <h1 className="event-name">{props.targetEventName ? props.targetEventName : 'Name'}</h1>
                 <h3 className="event-date">Hosted By: {props.targetEventDate ? props.targetEventCompany : 'Company'}</h3>
-                <Timer eventDate={props.targetEventDate} />
+                <Timer eventDate={props.timeout} />
             </div>
             <Form onSubmit={props.handleSubmit}>
             <Form.Row className="align-items-center search-form">
