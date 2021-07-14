@@ -244,12 +244,18 @@ class Dashboard extends React.Component {
         .then(result => console.log(result));
   }
   handleLogOut = () => {
+    this.setState({
+      isDataLoaded: false
+    });
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/users/logout', {}, {
       headers: {
         'Authorization': 'Bearer '+ token
       }
     }).then(() => {
+      this.setState({
+        isDataLoaded: true
+      });
       removeUserSession();
       this.props.history.push('/')
     }).catch( e => console.log(e));

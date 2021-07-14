@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { setUserSession } from '../Utils/Common';
+import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -63,7 +64,7 @@ function Login(props) {
             props.history.push('/dashboard');
         }).catch(e => {
             setLoading(false);
-            setError(e.response.data.message);
+            setError('Login Failed');
             console.log(e);
         })
     }
@@ -71,6 +72,23 @@ function Login(props) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const Loader = (
+      <Spinner
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          justifyContent: "center",
+          width: "60px",
+          height: "60px",
+        }}
+        animation="border"
+        variant="primary"
+        role="status"
+      >
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -119,8 +137,9 @@ function Login(props) {
                 color="primary"
                 className={classes.submit}
                 >
-                {loading ? 'Loading': 'SIGN IN'}
+                  SIGN IN
                 </Button>
+                {error}
                 <Grid container>
                 <Grid item xs>
                     <Link href="#" variant="body2">
@@ -133,7 +152,7 @@ function Login(props) {
                     </Link>
                 </Grid>
                 </Grid>
-                {error}
+                {loading ? Loader : null }
             </form>
             </div>
             <Box mt={8}>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import { setUserSession } from '../Utils/Common';
 import Avatar from '@material-ui/core/Avatar';
@@ -53,6 +54,23 @@ export default function SignUp(props) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const Loader = (
+    <Spinner
+      style={{
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        justifyContent: "center",
+        width: "60px",
+        height: "60px",
+      }}
+      animation="border"
+      variant="primary"
+      role="status"
+    >
+      <span className="sr-only">Loading...</span>
+    </Spinner>
+  );
   const handleSignUp = (e) => {
     e.preventDefault();
     setError(null);
@@ -131,7 +149,7 @@ export default function SignUp(props) {
             color="primary"
             className={classes.submit}
           >
-              {loading ? 'Loading ...' : 'Sign Up'}
+             SIGN UP
           </Button>
           {error}
           <Grid container justifyContent="flex-end">
@@ -142,6 +160,7 @@ export default function SignUp(props) {
             </Grid>
           </Grid>
         </form>
+        {loading ? Loader : null}
       </div>
       <Box mt={5}>
         <Copyright />
