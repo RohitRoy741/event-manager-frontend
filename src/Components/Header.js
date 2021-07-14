@@ -1,7 +1,10 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import { Navbar, Nav, Form, FormControl, Button, Modal, Col, InputGroup} from "react-bootstrap";
 import Timer from "./Timer";
+import { getUser } from "../Utils/Common";
 function Header(props){
+    
+    const user = getUser();
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true) ;
@@ -21,11 +24,11 @@ function Header(props){
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="navbar-items">
                 <Nav>
-                <Nav.Link href="#home" className="navbar-item">Home</Nav.Link>
+                <Nav.Link href="#home" className="navbar-item">{user.username}</Nav.Link>
                 <Nav.Link href="#link"  className="navbar-item" onClick={()=>handleShow(true)}>Create-Event</Nav.Link>
                 <Nav.Link href="#schedule" className="navbar-item">Schedule</Nav.Link>
                 <Nav.Link href="#my-events" className="navbar-item">My Events</Nav.Link>
-                <Nav.Link href="#history" className="navbar-item">History</Nav.Link>
+                <Nav.Link href="#history" className="navbar-item" onClick={props.handleLogOut}>Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
             </Navbar>
