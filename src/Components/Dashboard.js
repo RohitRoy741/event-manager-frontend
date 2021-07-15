@@ -4,7 +4,7 @@ import Header from "./Header";
 import MainContent from "./MainContent";
 import Filters from "./Filters";
 import { removeUserSession, getToken } from "../Utils/Common";
-import { Spinner, Modal, Form, Button} from "react-bootstrap";
+import { Spinner, Modal, Form, Button, Alert} from "react-bootstrap";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -28,7 +28,10 @@ class Dashboard extends React.Component {
         company: {
           name: 'company'
         }
-      }
+      },
+      showUpdate: false,
+      showCreate: false,
+      showDelete: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,6 +43,24 @@ class Dashboard extends React.Component {
     this.handleClose = this.handleClose.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
+    this.setShowUpdate = this.setShowUpdate.bind(this);
+    this.setShowCreate = this.setShowCreate.bind(this);
+    this.setShowDelete = this.setShowDelete.bind(this);
+  }
+  setShowUpdate(value) {
+    this.setState({
+      showUpdate: value
+    })
+  }
+  setShowCreate(value) {
+    this.setState({
+      showCreate: value
+    })
+  }
+  setShowDelete(value) {
+    this.setState({
+      showDelete: value
+    })
   }
   handleChange(name,value){
     if(name==="date") {
@@ -148,6 +169,7 @@ class Dashboard extends React.Component {
       img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
     };
     let events = this.state.data.concat([event]);
+    this.setShowCreate(true);
     let postEvent = {
       name: this.state.name,
       city: this.state.city,
@@ -214,6 +236,7 @@ class Dashboard extends React.Component {
       data: events,
       filteredData: events
     });
+    this.setShowUpdate(true);
     let patchEvent = {
       name: this.state.name,
       city: this.state.city,
@@ -236,6 +259,7 @@ class Dashboard extends React.Component {
       data: events,
       filteredData: events
     });
+    this.setShowDelete(true);
     const requestOptions = {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' }
@@ -333,6 +357,21 @@ class Dashboard extends React.Component {
     );
     return (
       <div>
+        <Alert variant="success" show={this.state.showUpdate} onClose={() => this.setShowUpdate(false)} dismissible>
+          <p>
+            Event Update Successful!
+          </p>
+        </Alert>
+        <Alert variant="success" show={this.state.showCreate} onClose={() => this.setShowCreate(false)} dismissible>
+          <p>
+            Event Created Successfully!
+          </p>
+        </Alert>
+        <Alert variant="success" show={this.state.showDelete} onClose={() => this.setShowDelete(false)} dismissible>
+          <p>
+            Event Deleted Successfully!
+          </p>
+        </Alert>
         <Header inputValue={this.state.searchValue}
          handleChange={this.handleChange}
          filterKey={this.state.filterKey}
