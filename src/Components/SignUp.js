@@ -75,7 +75,7 @@ export default function SignUp(props) {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    axios.post('https://salamander-event-manager.herokuapp.com/users/', {
+    axios.post('https://salamander-event-manager.herokuapp.com/v1/users/', {
         username,
         password,
         email
