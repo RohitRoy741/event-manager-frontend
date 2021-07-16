@@ -138,42 +138,46 @@ class Dashboard extends React.Component {
   }
   createEvent(e) {
     e.preventDefault();
-    let event = {
-      id: this.state.data.length + 1,
-      name: this.state.name,
-      address: {
-        city: this.state.city
-      },
-      company: {
-        name: this.state.company
-      },
-      date: new Date(this.state.eventDate[0]),
-      img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
-    };
-    let events = this.state.data.concat([event]);
     let postEvent = {
       name: this.state.name,
       city: this.state.city,
       company: this.state.company,
       date: new Date(this.state.eventDate[0])
     };
-    this.setState({
-      data: events,
-      filteredData: events,
-      name: "",
-      city: "",
-      company: "",
-      eventDates: [new Date()]
-    });
-    this.notify('Event Created Successfully');
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/v1/events', postEvent, {
       headers: {
         'Authorization': 'Bearer '+ token
       }
-    }).then(result => console.log(result));
+    }).then(result => {
+      console.log(result);
+      let event = {
+        _id: result.data._id,
+        id: this.state.data.length,
+        name: this.state.name,
+        address: {
+          city: this.state.city
+        },
+        company: {
+          name: this.state.company
+        },
+        date: new Date(this.state.eventDate[0]),
+        img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
+      };
+      let events = this.state.data.concat([event]);
+      this.setState({
+        data: events,
+        filteredData: events,
+        name: "",
+        city: "",
+        company: "",
+        eventDates: [new Date()]
+      });
+      this.notify('Event Created Successfully');
+    });
   }
   handleShow(id, _id, data, date) {
+    console.log(id, _id);
     this.setState({
       id: id,
       _id: _id,
@@ -191,32 +195,6 @@ class Dashboard extends React.Component {
   }
   updateEvent(e) {
     e.preventDefault();
-    console.log(this.state.eventDate[0]);
-    let event = {
-      id: this.state.id,
-      name: this.state.name,
-      address: {
-        city: this.state.city
-      },
-      company: {
-        name: this.state.company
-      },
-      date: new Date(this.state.eventDate[0]),
-      img: this.state.data[this.state.id].img
-    };
-    let events = [];
-    for(let i=0; i<this.state.data.length; i++) {
-      if(i !== this.state.id) {
-        events.push(this.state.data[i]);
-      } else {
-        events.push(event);
-      }
-    }
-    this.setState({
-      data: events,
-      filteredData: events
-    });
-    this.notify('Event Updated Successfully');
     let patchEvent = {
       name: this.state.name,
       city: this.state.city,
@@ -229,9 +207,38 @@ class Dashboard extends React.Component {
       headers: {
         'Authorization': 'Bearer '+ token
       }
-    }).then(response => console.log(response));
+    }).then(response => {
+      console.log(response);
+      let event = {
+        _id: response.data._id,
+        id: this.state.id,
+        name: this.state.name,
+        address: {
+          city: this.state.city
+        },
+        company: {
+          name: this.state.company
+        },
+        date: new Date(this.state.eventDate[0]),
+        img: this.state.data[this.state.id].img
+      };
+      let events = [];
+      for(let i=0; i<this.state.data.length; i++) {
+        if(i !== this.state.id) {
+          events.push(this.state.data[i]);
+        } else {
+          events.push(event);
+        }
+      }
+      this.setState({
+        data: events,
+        filteredData: events
+      });
+      this.notify('Event Updated Successfully');
+    });
   }
   deleteEvent(_id, id) {
+    console.log(_id);
     let events = this.state.data.filter((event) => event.id !== id);
     this.setState({
       data: events,
