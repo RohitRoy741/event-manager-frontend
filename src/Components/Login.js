@@ -55,7 +55,7 @@ function Login(props) {
         e.preventDefault();
         setError(null);
         setLoading(true);
-        axios.post('https://salamander-event-manager.herokuapp.com/v1/users/login', {
+        axios.post('https://salamander-event-manager.herokuapp.com/users/login', {
             username,
             password
         }).then( (response) => {
