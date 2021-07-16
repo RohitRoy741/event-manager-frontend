@@ -184,14 +184,12 @@ class Dashboard extends React.Component {
       company: "",
       eventDates: [new Date()]
     });
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(postEvent)
-    };
-    fetch('https://salamander-event-manager.herokuapp.com/events', requestOptions)
-        .then(response => response.json())
-        .then((result) => console.log(result));
+    const token = getToken();
+    axios.post('https://salamander-event-manager.herokuapp.com/events', postEvent, {
+      headers: {
+        'Authorization': 'Bearer '+ token
+      }
+    }).then(result => console.log(result));
   }
   handleShow(id, _id, data, date) {
     this.setState({
@@ -244,14 +242,12 @@ class Dashboard extends React.Component {
       date: new Date(this.state.eventDate[0])
     };
     console.log(patchEvent, this.state._id, this.state.id);
-    const requestOptions = {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(patchEvent)
-    };
-    fetch('https://salamander-event-manager.herokuapp.com/events/'+this.state._id, requestOptions)
-        .then(response => response.json())
-        .then((result) => console.log(result));
+    const token = getToken();
+    axios.patch('https://salamander-event-manager.herokuapp.com/events/'+this.state._id, patchEvent, {
+      headers: {
+        'Authorization': 'Bearer '+ token
+      }
+    }).then(response => console.log(response));
   }
   deleteEvent(_id, id) {
     let events = this.state.data.filter((event) => event.id !== id);
@@ -260,13 +256,12 @@ class Dashboard extends React.Component {
       filteredData: events
     });
     this.setShowDelete(true);
-    const requestOptions = {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
-    };
-    fetch('https://salamander-event-manager.herokuapp.com/events/'+_id, requestOptions) 
-        .then(response => response.json())
-        .then(result => console.log(result));
+    const token = getToken();
+    axios.delete('https://salamander-event-manager.herokuapp.com/events/'+_id, {
+      headers: {
+        'Authorization': 'Bearer '+ token 
+      }
+    }).then(result => console.log(result));
   }
   handleLogOut = () => {
     this.setState({
@@ -286,9 +281,14 @@ class Dashboard extends React.Component {
     }).catch( e => console.log(e));
   }
   componentDidMount() {
-      fetch("https://salamander-event-manager.herokuapp.com/events")
-        .then((response) => response.json())
+      const token = getToken();
+      axios.get('https://salamander-event-manager.herokuapp.com/events', {
+        headers: {
+          'Authorization': 'Bearer '+ token
+        }
+      })
         .then((result) => {
+          result = result.data
           console.log(result);
           let newEvents = [];
           let targetEvent = {};
