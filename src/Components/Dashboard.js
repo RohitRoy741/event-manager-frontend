@@ -143,6 +143,29 @@ class Dashboard extends React.Component {
   }
   createEvent(e) {
     e.preventDefault();
+    let event = {
+      id: this.state.data.length,
+      name: this.state.name,
+      address: {
+        city: this.state.city
+      },
+      company: {
+        name: this.state.company
+      },
+      date: new Date(this.state.eventDate[0]),
+      img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
+    };
+    let events = this.state.data.concat([event]);
+    this.setState({
+      allData: events,
+      data: events,
+      filteredData: events,
+      name: "",
+      city: "",
+      company: "",
+      eventDates: [new Date()]
+    });
+    this.notify('Event Created Successfully');
     let postEvent = {
       name: this.state.name,
       city: this.state.city,
@@ -156,21 +179,10 @@ class Dashboard extends React.Component {
       }
     }).then(result => {
       console.log(result);
-      let event = {
-        _id: result.data._id,
-        id: this.state.data.length,
-        name: this.state.name,
-        address: {
-          city: this.state.city
-        },
-        company: {
-          name: this.state.company
-        },
-        date: new Date(this.state.eventDate[0]),
-        img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
-      };
-      let events = this.state.data.concat([event]);
+      let events = this.state.data;
+      events[events.length-1]._id = result.data._id;
       this.setState({
+        allData: events,
         data: events,
         filteredData: events,
         name: "",
@@ -178,7 +190,6 @@ class Dashboard extends React.Component {
         company: "",
         eventDates: [new Date()]
       });
-      this.notify('Event Created Successfully');
     });
   }
   handleShow(id, _id, data, date) {
@@ -200,6 +211,32 @@ class Dashboard extends React.Component {
   }
   updateEvent(e) {
     e.preventDefault();
+    let event = {
+      id: this.state.id,
+      name: this.state.name,
+      address: {
+        city: this.state.city
+      },
+      company: {
+        name: this.state.company
+      },
+      date: new Date(this.state.eventDate[0]),
+      img: this.state.data[this.state.id].img
+    };
+    let events = [];
+    for(let i=0; i<this.state.data.length; i++) {
+      if(i !== this.state.id) {
+        events.push(this.state.data[i]);
+      } else {
+        events.push(event);
+      }
+    }
+    this.setState({
+      allData: events,
+      data: events,
+      filteredData: events
+    });
+    this.notify('Event Updated Successfully');
     let patchEvent = {
       name: this.state.name,
       city: this.state.city,
@@ -236,10 +273,10 @@ class Dashboard extends React.Component {
         }
       }
       this.setState({
+        allData: events,
         data: events,
         filteredData: events
       });
-      this.notify('Event Updated Successfully');
     });
   }
   deleteEvent(_id, id) {
@@ -297,6 +334,12 @@ class Dashboard extends React.Component {
     }).then((response) => {
       console.log(response);
       const result = response.data;
+      if(response.data.length === 0) {
+        this.setState({
+          isDataLoaded: true
+        });
+        return this.notify('No events Scheduled');
+      }
       let newEvents = [];
       let i = 0;
       for(let item of result) {
@@ -332,6 +375,30 @@ class Dashboard extends React.Component {
     });
   }
   addRSVP(_id, id) {
+    const eventsOne = this.state.filteredData;
+    for(let event of eventsOne) {
+      if(event.id===id) {
+        event.rsvp = true;
+      }
+    }
+    const eventsTwo = this.state.data;
+    for(let event of eventsTwo) {
+      if(event.id===id) {
+        event.rsvp = true;
+      }
+    }
+    const eventsThree = this.state.allData;
+    for(let event of eventsThree) {
+      if(event.id===id) {
+        event.rsvp = true;
+      }
+    }
+    this.setState({
+      allData: eventsThree,
+      data: eventsTwo,
+      filteredData: eventsOne
+    });
+    this.notify('Event RSVP added!');
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/add/'+_id, {}, {
       headers: {
@@ -339,18 +406,34 @@ class Dashboard extends React.Component {
       }
     }).then( (response) => {
       console.log(response);
-      const events = this.state.allData;
-      events[id].rsvp = true;
-      this.setState({
-        allData: events,
-        data: events,
-        filteredData: events
-      });
-      this.notify('Event RSVP added!');
     });
   }
   removeRSVP(_id, id) {
     console.log(id);
+    const eventsOne = this.state.filteredData;
+    for(let event of eventsOne) {
+      if(event.id===id) {
+        event.rsvp = false;
+      }
+    }
+    const eventsTwo = this.state.data;
+    for(let event of eventsTwo) {
+      if(event.id===id) {
+        event.rsvp = false;
+      }
+    }
+    const eventsThree = this.state.allData;
+    for(let event of eventsThree) {
+      if(event.id===id) {
+        event.rsvp = false;
+      }
+    }
+    this.setState({
+      allData: eventsThree,
+      data: eventsTwo,
+      filteredData: eventsOne
+    });
+    this.notify('Event RSVP removed!');
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/remove/'+_id, {}, {
       headers: {
@@ -358,30 +441,6 @@ class Dashboard extends React.Component {
       }
     }).then( (response) => {
       console.log(response);
-      const events = this.state.filteredData;
-      events[id].rsvp = false;
-      const events_all = this.state.data;
-      for(let event of events_all) {
-        if(event._id.toString() === events[id]._id.toString()) {
-          console.log(event.name);
-          event.rsvp = false;
-          break;
-        }
-      }
-      const newAllData = this.state.allData;
-      for(let event of newAllData) {
-        if(event._id.toString() === events[id]._id.toString()) {
-          console.log(event.name);
-          event.rsvp = false;
-          break;
-        }
-      }
-      this.setState({
-        allData: newAllData,
-        data: events_all,
-        filteredData: events
-      });
-      this.notify('Event RSVP removed!');
     });
   }
   componentDidMount() {
