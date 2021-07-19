@@ -21,8 +21,13 @@ function MainContent(props) {
                     <Card.Text>
                         Place: {props.data.address.city}
                     </Card.Text>
-                    <Button variant="primary" onClick={() => handleShow(true)} className="mr-2">RSVP</Button>
-                    <Button variant="secondary" onClick={() => props.handleShow(props.data.id, props.data._id, props.data, props.date)} className="mr-2">Update</Button>
+                    { !props.data.rsvp
+                     ?
+                     <Button variant="success" onClick={() => props.addRSVP(props.data._id, props.data.id)} className="mr-1">RSVP</Button>
+                     :
+                     <Button variant="primary" onClick={() => props.removeRSVP(props.data._id, props.data.id) } className="mr-1">Remove</Button>
+                    }
+                    <Button variant="secondary" onClick={() => props.handleShow(props.data.id, props.data._id, props.data, props.date)} className="mr-1">Update</Button>
                     <Button variant="danger" onClick={() => props.deleteEvent(props.data._id, props.data.id)}>Delete</Button>
                 </Card.Body>
                 </Card>

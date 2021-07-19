@@ -3,7 +3,7 @@ import axios from "axios";
 import Header from "./Header";
 import MainContent from "./MainContent";
 import Filters from "./Filters";
-import { removeUserSession, getToken } from "../Utils/Common";
+import { removeUserSession, getToken, getUser } from "../Utils/Common";
 import { Spinner, Modal, Form, Button } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,7 +30,8 @@ class Dashboard extends React.Component {
         company: {
           name: 'company'
         }
-      }
+      },
+      allData: null
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -43,6 +44,10 @@ class Dashboard extends React.Component {
     this.deleteEvent = this.deleteEvent.bind(this);
     this.handleLogOut = this.handleLogOut.bind(this);
     this.notify = this.notify.bind(this);
+    this.addRSVP = this.addRSVP.bind(this);
+    this.removeRSVP = this.removeRSVP.bind(this);
+    this.showSchedule = this.showSchedule.bind(this);
+    this.showEvents = this.showEvents.bind(this);
   }
   handleChange(name,value){
     if(name==="date") {
@@ -280,8 +285,109 @@ class Dashboard extends React.Component {
       progress: undefined,
       });
   }
+  showSchedule() {
+    const token = getToken();
+    this.setState({
+      isDataLoaded: false
+    });
+    axios.get('https://salamander-event-manager.herokuapp.com/v1/schedule/', {
+      headers: {
+        'Authorization': 'Bearer '+ token
+      }
+    }).then((response) => {
+      console.log(response);
+      const result = response.data;
+      let newEvents = [];
+      let i = 0;
+      for(let item of result) {
+        let event  = {
+          _id: item._id,
+          id : i++,
+          name: item.name,
+          address: {
+            city: item.city
+          },
+          company: {
+            name: item.company
+          },
+          date: new Date(item.date),
+          img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`,
+          rsvp: true
+        };
+        newEvents.push(event);
+        this.setState({
+          data: newEvents,
+          filteredData : newEvents,
+          isDataLoaded: true
+        });
+      }
+    }) 
+  }
+  showEvents() {
+    this.setState(state => {
+      return {
+        data: state.allData,
+        filteredData: state.allData
+      }
+    });
+  }
+  addRSVP(_id, id) {
+    const token = getToken();
+    axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/add/'+_id, {}, {
+      headers: {
+        'Authorization': 'Bearer '+ token
+      }
+    }).then( (response) => {
+      console.log(response);
+      const events = this.state.allData;
+      events[id].rsvp = true;
+      this.setState({
+        allData: events,
+        data: events,
+        filteredData: events
+      });
+      this.notify('Event RSVP added!');
+    });
+  }
+  removeRSVP(_id, id) {
+    console.log(id);
+    const token = getToken();
+    axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/remove/'+_id, {}, {
+      headers: {
+        'Authorization': 'Bearer '+ token
+      }
+    }).then( (response) => {
+      console.log(response);
+      const events = this.state.filteredData;
+      events[id].rsvp = false;
+      const events_all = this.state.data;
+      for(let event of events_all) {
+        if(event._id.toString() === events[id]._id.toString()) {
+          console.log(event.name);
+          event.rsvp = false;
+          break;
+        }
+      }
+      const newAllData = this.state.allData;
+      for(let event of newAllData) {
+        if(event._id.toString() === events[id]._id.toString()) {
+          console.log(event.name);
+          event.rsvp = false;
+          break;
+        }
+      }
+      this.setState({
+        allData: newAllData,
+        data: events_all,
+        filteredData: events
+      });
+      this.notify('Event RSVP removed!');
+    });
+  }
   componentDidMount() {
       const token = getToken();
+      const user = getUser();
+      console.log(user);
       axios.get('https://salamander-event-manager.herokuapp.com/v1/events', {
         headers: {
           'Authorization': 'Bearer '+ token
@@ -295,6 +401,14 @@ class Dashboard extends React.Component {
           let date = new Date(2027, 11, 30);
           let i = 0;
           for(let item of result) {
+            let rsvp = false;
+            for(let attendee of item.attendees) {
+              if(attendee._id.toString() === user._id.toString()) {
+                rsvp = true;
+                break;
+              }
+            }
+            console.log(item.name, rsvp);
             let event  = {
               _id: item._id,
               id : i++,
@@ -306,7 +420,8 @@ class Dashboard extends React.Component {
                 name: item.company
               },
               date: new Date(item.date),
-              img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`
+              img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`,
+              rsvp
             };
             if(event.date < date) {
               targetEvent = event;
@@ -318,6 +433,7 @@ class Dashboard extends React.Component {
         })
         .then( eventObj => {
           this.setState(state => ({
+            allData: eventObj.newEvents,
             data: eventObj.newEvents,
             filteredData: eventObj.newEvents,
             isDataLoaded: true,
@@ -335,6 +451,8 @@ class Dashboard extends React.Component {
         date={event.date.toDateString()}
         handleShow={this.handleShow}
         deleteEvent = {this.deleteEvent}
+        addRSVP = {this.addRSVP}
+        removeRSVP = {this.removeRSVP}
         />;
       });
     }
@@ -386,6 +504,8 @@ class Dashboard extends React.Component {
          timeout = {this.state.bannerEvent.date.toString()}
          image = {this.state.bannerEvent.img}
          handleLogOut = {this.handleLogOut}
+         showSchedule = {this.showSchedule}
+         showEvents = {this.showEvents}
         />
         <div className="main-content">
           <div className="filter-div">
