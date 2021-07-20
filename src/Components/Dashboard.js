@@ -398,7 +398,7 @@ class Dashboard extends React.Component {
       data: eventsTwo,
       filteredData: eventsOne
     });
-    this.notify('Event RSVP added!');
+    // this.notify('Event RSVP added!');
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/add/'+_id, {}, {
       headers: {
@@ -433,7 +433,7 @@ class Dashboard extends React.Component {
       data: eventsTwo,
       filteredData: eventsOne
     });
-    this.notify('Event RSVP removed!');
+    // this.notify('Event RSVP removed!');
     const token = getToken();
     axios.post('https://salamander-event-manager.herokuapp.com/v1/rsvp/remove/'+_id, {}, {
       headers: {

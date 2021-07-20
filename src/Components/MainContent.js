@@ -5,6 +5,7 @@ function MainContent(props) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [message, setMessage] = useState('');
     return(
         <div>
             <div className="card-block">
@@ -23,9 +24,17 @@ function MainContent(props) {
                     </Card.Text>
                     { !props.data.rsvp
                      ?
-                     <Button variant="success" onClick={() => props.addRSVP(props.data._id, props.data.id)} className="mr-1">RSVP</Button>
+                     <Button variant="primary" onClick={() => {
+                        setMessage('Event RSVP successful. Please check your schedule.')
+                        handleShow();
+                        return props.addRSVP(props.data._id, props.data.id)
+                     }} className="mr-1">RSVP</Button>
                      :
-                     <Button variant="primary" onClick={() => props.removeRSVP(props.data._id, props.data.id) } className="mr-1">Remove</Button>
+                     <Button variant="success" onClick={() => {
+                        setMessage('Event RSVP removed. Please check your schedule.')
+                        handleShow();
+                        return props.removeRSVP(props.data._id, props.data.id)
+                     } } className="mr-1">Added</Button>
                     }
                     <Button variant="secondary" onClick={() => props.handleShow(props.data.id, props.data._id, props.data, props.date)} className="mr-1">Update</Button>
                     <Button variant="danger" onClick={() => props.deleteEvent(props.data._id, props.data.id)}>Delete</Button>
@@ -42,7 +51,7 @@ function MainContent(props) {
                 <Modal.Title>{props.data.name}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    Event RSVP successful. We will send you a reminder mail before the event.
+                    {message}
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="primary" onClick={handleClose}>
