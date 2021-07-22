@@ -281,10 +281,13 @@ class Dashboard extends React.Component {
   }
   deleteEvent(_id, id) {
     console.log(_id);
-    let events = this.state.data.filter((event) => event.id !== id);
+    let events_one = this.state.allData.filter((event) => event.id !== id);
+    let events_two = this.state.data.filter((event) => event.id !== id);
+    let events_three = this.state.filteredData.filter((event) => event.id !== id);
     this.setState({
-      data: events,
-      filteredData: events
+      allData: events_one,
+      data: events_two,
+      filteredData: events_three
     });
     this.notify('Event Deleted Successfully');
     const token = getToken();
@@ -324,7 +327,7 @@ class Dashboard extends React.Component {
   }
   showSchedule() {
     let events = this.state.allData.filter((event) => event.rsvp);
-    if(events.length==0) {
+    if(events.length===0) {
       return this.notify("Your schedule is clear");
     }
     else {
