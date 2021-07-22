@@ -211,6 +211,14 @@ class Dashboard extends React.Component {
   }
   updateEvent(e) {
     e.preventDefault();
+    let image, r;
+    for(let event of this.state.allData) {
+      if(event.id===this.state.id) {
+        image = event.img;
+        r = event.rsvp;
+        break; 
+      }
+    }
     let event = {
       id: this.state.id,
       name: this.state.name,
@@ -221,20 +229,37 @@ class Dashboard extends React.Component {
         name: this.state.company
       },
       date: new Date(this.state.eventDate[0]),
-      img: this.state.data[this.state.id].img
+      img: image,
+      rsvp: r
     };
+    let allEvents = [];
+    for(let i=0; i<this.state.allData.length; i++) {
+      if(this.state.allData[i].id !== this.state.id) {
+        allEvents.push(this.state.allData[i]);
+      } else {
+        allEvents.push(event);
+      }
+    }
     let events = [];
     for(let i=0; i<this.state.data.length; i++) {
-      if(i !== this.state.id) {
+      if(this.state.data[i].id !== this.state.id) {
         events.push(this.state.data[i]);
       } else {
         events.push(event);
       }
     }
+    let filteredEvents = [];
+    for(let i=0; i<this.state.filteredData.length; i++) {
+      if(this.state.filteredData[i].id !== this.state.id) {
+        filteredEvents.push(this.state.data[i]);
+      } else {
+        filteredEvents.push(event);
+      }
+    }
     this.setState({
-      allData: events,
+      allData: allEvents,
       data: events,
-      filteredData: events
+      filteredData: filteredEvents
     });
     this.notify('Event Updated Successfully');
     let patchEvent = {
@@ -262,20 +287,37 @@ class Dashboard extends React.Component {
           name: this.state.company
         },
         date: new Date(this.state.eventDate[0]),
-        img: this.state.data[this.state.id].img
+        img: image,
+        rsvp: r
       };
+      let allEvents = [];
+      for(let i=0; i<this.state.allData.length; i++) {
+        if(this.state.allData[i].id !== this.state.id) {
+          allEvents.push(this.state.allData[i]);
+        } else {
+          allEvents.push(event);
+        }
+      }
       let events = [];
       for(let i=0; i<this.state.data.length; i++) {
-        if(i !== this.state.id) {
+        if(this.state.data[i].id !== this.state.id) {
           events.push(this.state.data[i]);
         } else {
           events.push(event);
         }
       }
+      let filteredEvents = [];
+      for(let i=0; i<this.state.filteredData.length; i++) {
+        if(this.state.filteredData[i].id !== this.state.id) {
+          filteredEvents.push(this.state.data[i]);
+        } else {
+          filteredEvents.push(event);
+        }
+      }
       this.setState({
-        allData: events,
+        allData: allEvents,
         data: events,
-        filteredData: events
+        filteredData: filteredEvents
       });
     });
   }
