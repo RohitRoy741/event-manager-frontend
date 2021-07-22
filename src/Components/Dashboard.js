@@ -155,7 +155,7 @@ class Dashboard extends React.Component {
       date: new Date(this.state.eventDate[0]),
       img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${this.state.data.length+1}`
     };
-    let events = this.state.data.concat([event]);
+    let events = this.state.allData.concat([event]);
     this.setState({
       allData: events,
       data: events,
