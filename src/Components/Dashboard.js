@@ -323,48 +323,16 @@ class Dashboard extends React.Component {
       });
   }
   showSchedule() {
-    const token = getToken();
-    this.setState({
-      isDataLoaded: false
-    });
-    axios.get('https://salamander-event-manager.herokuapp.com/v1/schedule/', {
-      headers: {
-        'Authorization': 'Bearer '+ token
-      }
-    }).then((response) => {
-      console.log(response);
-      const result = response.data;
-      if(response.data.length === 0) {
-        this.setState({
-          isDataLoaded: true
-        });
-        return this.notify('No events Scheduled');
-      }
-      let newEvents = [];
-      let i = 0;
-      for(let item of result) {
-        let event  = {
-          _id: item._id,
-          id : i++,
-          name: item.name,
-          address: {
-            city: item.city
-          },
-          company: {
-            name: item.company
-          },
-          date: new Date(item.date),
-          img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`,
-          rsvp: true
-        };
-        newEvents.push(event);
-        this.setState({
-          data: newEvents,
-          filteredData : newEvents,
-          isDataLoaded: true
-        });
-      }
-    }) 
+    let events = this.state.allData.filter((event) => event.rsvp);
+    if(events.length==0) {
+      return this.notify("Your schedule is clear");
+    }
+    else {
+      this.setState({
+        data: events,
+        filteredData: events
+      })
+    }
   }
   showEvents() {
     this.setState(state => {
