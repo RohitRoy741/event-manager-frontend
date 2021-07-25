@@ -193,7 +193,7 @@ class Dashboard extends React.Component {
       )
       .then((result) => {
         console.log(result);
-        let events = this.state.data;
+        let events = this.state.allData;
         events[events.length - 1]._id = result.data._id;
         this.setState({
           allData: events,
@@ -204,6 +204,21 @@ class Dashboard extends React.Component {
           company: "",
           eventDates: [new Date()],
         });
+        event = events[events.length - 1];
+        if (
+          event.id === this.state.bannerEvent.id ||
+          event.date < this.state.bannerEvent.date
+        ) {
+          let temp = this.state.allData[0];
+          this.state.allData.forEach((item) => {
+            if (item.date < temp.date) {
+              temp = item;
+            }
+          });
+          this.setState({
+            bannerEvent: temp,
+          });
+        }
       });
   }
   handleShow(id, _id, data, date) {
@@ -340,6 +355,20 @@ class Dashboard extends React.Component {
           data: events,
           filteredData: filteredEvents,
         });
+        if (
+          event.id === this.state.bannerEvent.id ||
+          event.date < this.state.bannerEvent.date
+        ) {
+          let temp = this.state.allData[0];
+          this.state.allData.forEach((item) => {
+            if (item.date < temp.date) {
+              temp = item;
+            }
+          });
+          this.setState({
+            bannerEvent: temp,
+          });
+        }
       });
   }
   deleteEvent(_id, id) {
@@ -365,7 +394,21 @@ class Dashboard extends React.Component {
           },
         }
       )
-      .then((result) => console.log(result));
+      .then((result) => {
+        if (id === this.state.bannerEvent.id) {
+          console.log(this.state.allData);
+          let temp = this.state.allData[0];
+          this.state.allData.forEach((item) => {
+            if (item.date < temp.date) {
+              temp = item;
+            }
+          });
+          this.setState({
+            bannerEvent: temp,
+          });
+        }
+        console.log(result);
+      });
   }
   handleLogOut = () => {
     this.setState({
