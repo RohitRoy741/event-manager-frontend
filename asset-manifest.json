@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/event-manager-frontend/static/css/main.bf469ce9.chunk.css",
-    "main.js": "/event-manager-frontend/static/js/main.aef9e189.chunk.js",
-    "main.js.map": "/event-manager-frontend/static/js/main.aef9e189.chunk.js.map",
+    "main.css": "/event-manager-frontend/static/css/main.c716e08c.chunk.css",
+    "main.js": "/event-manager-frontend/static/js/main.d060d8c5.chunk.js",
+    "main.js.map": "/event-manager-frontend/static/js/main.d060d8c5.chunk.js.map",
     "runtime-main.js": "/event-manager-frontend/static/js/runtime-main.1191c8e1.js",
     "runtime-main.js.map": "/event-manager-frontend/static/js/runtime-main.1191c8e1.js.map",
     "static/css/2.97503911.chunk.css": "/event-manager-frontend/static/css/2.97503911.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.c5fdea88.chunk.js.map": "/event-manager-frontend/static/js/3.c5fdea88.chunk.js.map",
     "index.html": "/event-manager-frontend/index.html",
     "static/css/2.97503911.chunk.css.map": "/event-manager-frontend/static/css/2.97503911.chunk.css.map",
-    "static/css/main.bf469ce9.chunk.css.map": "/event-manager-frontend/static/css/main.bf469ce9.chunk.css.map",
+    "static/css/main.c716e08c.chunk.css.map": "/event-manager-frontend/static/css/main.c716e08c.chunk.css.map",
     "static/js/2.23fe4218.chunk.js.LICENSE.txt": "/event-manager-frontend/static/js/2.23fe4218.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.1191c8e1.js",
     "static/css/2.97503911.chunk.css",
     "static/js/2.23fe4218.chunk.js",
-    "static/css/main.bf469ce9.chunk.css",
-    "static/js/main.aef9e189.chunk.js"
+    "static/css/main.c716e08c.chunk.css",
+    "static/js/main.d060d8c5.chunk.js"
   ]
 }
