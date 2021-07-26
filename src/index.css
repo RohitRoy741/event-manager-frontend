@@ -71,7 +71,7 @@ code {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-right: 185px;
+  margin-right: 140px;
 }
 .navbar-item {
   margin-right: 10px;
@@ -171,12 +171,4 @@ code {
   right: 23px;
   top: 0;
   cursor: pointer;
-}
-.dellIcon {
-  fill: white;
-}
-svg.dti-brand-dell {
-  height: 32px;
-  width: 32px;
-  margin-right: 20px;
 }
