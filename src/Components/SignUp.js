@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import { Spinner } from 'react-bootstrap';
-import axios from 'axios';
-import { setUserSession } from '../Utils/Common';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import React, { useState } from "react";
+import { Spinner } from "react-bootstrap";
+import axios from "axios";
+import { setUserSession } from "../Utils/Common";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
-function Copyright() {  
+function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
+      {"Copyright © "}
       <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
+        Dell Technologies
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
@@ -30,16 +30,16 @@ function Copyright() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -49,9 +49,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp(props) {
   const classes = useStyles();
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const Loader = (
@@ -75,20 +75,23 @@ export default function SignUp(props) {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    axios.post('https://salamander-event-manager.herokuapp.com/v1/users/', {
+    axios
+      .post("https://salamander-event-manager.herokuapp.com/v1/users/", {
         username,
         password,
-        email
-    }).then(response => {
+        email,
+      })
+      .then((response) => {
         setLoading(false);
         console.log(response);
         setUserSession(response.data.user, response.data.token);
-        props.history.push('/dashboard');
-    }).catch(e => {
+        props.history.push("/dashboard");
+      })
+      .catch((e) => {
         setLoading(false);
         setError(e.response.data.message);
-    })
-  }
+      });
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -149,7 +152,7 @@ export default function SignUp(props) {
             color="primary"
             className={classes.submit}
           >
-             SIGN UP
+            SIGN UP
           </Button>
           {error}
           <Grid container justifyContent="flex-end">

@@ -29,7 +29,16 @@ function Header(props) {
   return (
     <div>
       <Navbar expand="lg" variant="dark" bg="primary" className="navbar">
-        <Navbar.Brand href="#home">Event Manager</Navbar.Brand>
+        <Navbar.Brand href="#home">
+          <a href="//www.dell.com/en-in" className="delllogo">
+            <svg className="dti dti-brand-dell">
+              <svg viewBox="0 0 32 32" className="dellIcon">
+                <path d="M16,0A16,16,0,1,0,32,16,16.1,16.1,0,0,0,16,0Zm0,30.37A14.37,14.37,0,1,1,30.37,16,14.35,14.35,0,0,1,16,30.37ZM28.43,18.14v1.43H24v-7h1.63v5.6ZM7.54,19.46a3.4,3.4,0,0,0,3.36-2.64l4,3.05,4-3.05v2.64h4.49V18h-3V12.43H18.75v2.65L15,18.14l-.81-.71L16,16l1.94-1.53-1.12-.92-3.78,3-.81-.71L16,12.94,14.88,12l-4,3.05a3.48,3.48,0,0,0-3.36-2.65H4.69v7ZM6.22,18.14V13.86H7.44A2.06,2.06,0,0,1,9.38,16a2.05,2.05,0,0,1-1.94,2.14Z"></path>
+              </svg>
+            </svg>
+          </a>
+          Event Manager
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="navbar-items">
           <Nav>
