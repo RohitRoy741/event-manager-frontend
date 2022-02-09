@@ -590,7 +590,7 @@ class Dashboard extends React.Component {
               name: item.company,
             },
             date: new Date(item.date),
-            img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${i}`,
+            img: `https://source.unsplash.com/collection/4482145/700x600/?sig=${Math.round(Math.random()*1000)}`,
             rsvp,
           };
           if (event.date < date) {
